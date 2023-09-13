@@ -1,24 +1,51 @@
-﻿namespace MyMauiApp
+﻿namespace MyMauiApp;
+
+public partial class MainPage : ContentPage
 {
-    public partial class MainPage : ContentPage
+    private string _translatedNumber;
+
+    public MainPage()
     {
-        int count = 0;
+        InitializeComponent();
+    }
 
-        public MainPage()
+    private void OnTranslate(object sender, EventArgs e)
+    {
+        var enteredNumber = PhoneNumberText.Text;
+        _translatedNumber = PhoneWordTranslator.ToNumber(enteredNumber);
+
+        if (!string.IsNullOrEmpty(_translatedNumber))
         {
-            InitializeComponent();
+            CallButton.IsEnabled = true;
+            CallButton.Text = "Call " + _translatedNumber;
         }
-
-        private void OnCounterClicked(object sender, EventArgs e)
+        else
         {
-            count++;
-
-            if (count == 1)
-                CounterBtn.Text = $"Clicked {count} time";
-            else
-                CounterBtn.Text = $"Clicked {count} times";
-
-            SemanticScreenReader.Announce(CounterBtn.Text);
+            CallButton.IsEnabled = false;
+            CallButton.Text = "Call";
         }
+    }
+
+    private async void OnCall(object sender, EventArgs e)
+    {
+        if (await DisplayAlert(
+                "Dial a Number",
+                "Would you like to call " + _translatedNumber + "?",
+                "Yes",
+                "No"))
+            try
+            {
+                if (PhoneDialer.Default.IsSupported)
+                    PhoneDialer.Default.Open(_translatedNumber);
+            }
+            catch (ArgumentNullException)
+            {
+                await DisplayAlert("Unable to dial", "Phone number was not valid.", "OK");
+            }
+            catch (Exception)
+            {
+                // Other error has occurred.
+                await DisplayAlert("Unable to dial", "Phone dialing failed.", "OK");
+            }
     }
 }
