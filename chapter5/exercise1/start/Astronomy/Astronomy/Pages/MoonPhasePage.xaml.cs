@@ -1,20 +1,25 @@
-﻿namespace Astronomy.Pages;
+﻿using Astronomy.Data;
 
-public partial class MoonPhasePage : ContentPage
+namespace Astronomy.Pages;
+
+public sealed partial class MoonPhasePage : ContentPage
 {
-	public MoonPhasePage()
-	{
-		InitializeComponent();
+    public MoonPhasePage()
+    {
+        InitializeComponent();
 
-        InitializeUI();
-	}
+        InitializeUi();
+    }
 
-    void InitializeUI()
+    /// <summary>
+    /// 
+    /// </summary>
+    private void InitializeUi()
     {
         var phase = MoonPhaseCalculator.GetPhase(DateTime.Now);
 
         lblDate.Text = DateTime.Today.ToString("D");
-        lblMoonPhaseIcon.Text = moonPhaseEmojis[phase];
+        lblMoonPhaseIcon.Text = MoonPhaseEmojis[phase];
         lblMoonPhaseText.Text = phase.ToString();
 
         SetMoonPhaseLabels(lblPhaseIcon1, lblPhaseText1, 1);
@@ -23,22 +28,47 @@ public partial class MoonPhasePage : ContentPage
         SetMoonPhaseLabels(lblPhaseIcon4, lblPhaseText4, 4);
     }
 
-    void SetMoonPhaseLabels(Label lblIcon, Label lblText, int dayOffset)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="lblIcon"></param>
+    /// <param name="lblText"></param>
+    /// <param name="dayOffset"></param>
+    private static void SetMoonPhaseLabels(Label lblIcon, Label lblText, int dayOffset)
     {
         var phase = MoonPhaseCalculator.GetPhase(DateTime.Now.AddDays(dayOffset));
-        lblIcon.Text = moonPhaseEmojis[phase];
+        lblIcon.Text = MoonPhaseEmojis[phase];
         lblText.Text = DateTime.Now.AddDays(dayOffset).DayOfWeek.ToString();
     }
 
-    static Dictionary<MoonPhaseCalculator.Phase, string> moonPhaseEmojis = new Dictionary<MoonPhaseCalculator.Phase, string>
+    /// <summary>
+    /// 
+    /// </summary>
+    private static readonly Dictionary<MoonPhaseCalculator.Phase, string> MoonPhaseEmojis = new Dictionary<MoonPhaseCalculator.Phase, string>
+    {
         {
-            { MoonPhaseCalculator.Phase.New, "🌑" },
-            { MoonPhaseCalculator.Phase.WaxingCrescent, "🌒" },
-            { MoonPhaseCalculator.Phase.FirstQuarter, "🌓" },
-            { MoonPhaseCalculator.Phase.WaxingGibbous, "🌔" },
-            { MoonPhaseCalculator.Phase.Full, "🌕" },
-            { MoonPhaseCalculator.Phase.WaningGibbous, "🌖" },
-            { MoonPhaseCalculator.Phase.LastQuarter, "🌗" },
-            { MoonPhaseCalculator.Phase.WaningCrescent, "🌘" },
-        };
+            MoonPhaseCalculator.Phase.New, "🌑"
+        },
+        {
+            MoonPhaseCalculator.Phase.WaxingCrescent, "🌒"
+        },
+        {
+            MoonPhaseCalculator.Phase.FirstQuarter, "🌓"
+        },
+        {
+            MoonPhaseCalculator.Phase.WaxingGibbous, "🌔"
+        },
+        {
+            MoonPhaseCalculator.Phase.Full, "🌕"
+        },
+        {
+            MoonPhaseCalculator.Phase.WaningGibbous, "🌖"
+        },
+        {
+            MoonPhaseCalculator.Phase.LastQuarter, "🌗"
+        },
+        {
+            MoonPhaseCalculator.Phase.WaningCrescent, "🌘"
+        },
+    };
 }
