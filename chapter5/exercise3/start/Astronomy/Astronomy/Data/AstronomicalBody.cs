@@ -1,6 +1,6 @@
 ﻿namespace Astronomy
 {
-    public class AstronomicalBody
+    public sealed class AstronomicalBody
     {
         public string Name { get; set; }
         public string Mass { get; set; }

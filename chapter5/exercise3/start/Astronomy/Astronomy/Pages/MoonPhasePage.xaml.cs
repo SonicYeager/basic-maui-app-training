@@ -1,20 +1,20 @@
 ﻿namespace Astronomy.Pages;
 
-public partial class MoonPhasePage : ContentPage
+public sealed partial class MoonPhasePage : ContentPage
 {
 	public MoonPhasePage()
 	{
 		InitializeComponent();
 
-        InitializeUI();
+        InitializeUi();
 	}
 
-    void InitializeUI()
+    private void InitializeUi()
     {
         var phase = MoonPhaseCalculator.GetPhase(DateTime.Now);
 
         lblDate.Text = DateTime.Today.ToString("D");
-        lblMoonPhaseIcon.Text = moonPhaseEmojis[phase];
+        lblMoonPhaseIcon.Text = _moonPhaseEmojis[phase];
         lblMoonPhaseText.Text = phase.ToString();
 
         SetMoonPhaseLabels(lblPhaseIcon1, lblPhaseText1, 1);
@@ -23,14 +23,14 @@ public partial class MoonPhasePage : ContentPage
         SetMoonPhaseLabels(lblPhaseIcon4, lblPhaseText4, 4);
     }
 
-    void SetMoonPhaseLabels(Label lblIcon, Label lblText, int dayOffset)
+    private void SetMoonPhaseLabels(Label lblIcon, Label lblText, int dayOffset)
     {
         var phase = MoonPhaseCalculator.GetPhase(DateTime.Now.AddDays(dayOffset));
-        lblIcon.Text = moonPhaseEmojis[phase];
+        lblIcon.Text = _moonPhaseEmojis[phase];
         lblText.Text = DateTime.Now.AddDays(dayOffset).DayOfWeek.ToString();
     }
 
-    static Dictionary<MoonPhaseCalculator.Phase, string> moonPhaseEmojis = new Dictionary<MoonPhaseCalculator.Phase, string>
+    private static Dictionary<MoonPhaseCalculator.Phase, string> _moonPhaseEmojis = new Dictionary<MoonPhaseCalculator.Phase, string>
         {
             { MoonPhaseCalculator.Phase.New, "🌑" },
             { MoonPhaseCalculator.Phase.WaxingCrescent, "🌒" },

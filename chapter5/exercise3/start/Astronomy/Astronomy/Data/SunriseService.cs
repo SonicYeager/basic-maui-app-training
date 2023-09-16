@@ -5,9 +5,9 @@ using System.Text.Json;
 
 namespace Astronomy
 {
-    public class SunriseService
+    public sealed class SunriseService
     {
-        const string SunriseSunsetServiceUrl = "https://api.sunrise-sunset.org";
+        private const string SunriseSunsetServiceUrl = "https://api.sunrise-sunset.org";
 
         public async Task<(DateTime Sunrise, DateTime Sunset)> GetSunriseSunsetTimes(double latitude, double longitude)
         {
@@ -23,7 +23,7 @@ namespace Astronomy
             return (DateTime.Parse(data.Results.Sunrise), DateTime.Parse(data.Results.Sunset));
         }
 
-        class SunriseSunsetData
+        private class SunriseSunsetData
         {
 #pragma warning disable 0649
             // Field is only set via JSON deserialization, so disable warning that the field is never set.
@@ -32,7 +32,7 @@ namespace Astronomy
 #pragma warning restore 0649
         }
 
-        class SunriseSunsetResults
+        private class SunriseSunsetResults
         {
 #pragma warning disable 0649
             // Fields are only set via JSON deserialization, so disable warning that the fields are never set.

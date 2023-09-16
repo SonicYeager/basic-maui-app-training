@@ -1,6 +1,6 @@
 ﻿namespace Astronomy
 {
-    public class LatLongService : ILatLongService
+    public sealed class LatLongService : ILatLongService
     {
         public async Task<(double Latitude, double Longitude)> GetLatLong()
         {

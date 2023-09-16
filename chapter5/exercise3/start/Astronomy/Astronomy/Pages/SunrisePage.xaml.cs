@@ -1,8 +1,8 @@
 namespace Astronomy.Pages;
 
-public partial class SunrisePage : ContentPage
+public sealed partial class SunrisePage : ContentPage
 {
-    ILatLongService LatLongService { get; set; }
+    private ILatLongService LatLongService { get; set; }
     public SunrisePage()
     {
         InitializeComponent();
@@ -14,11 +14,11 @@ public partial class SunrisePage : ContentPage
         base.OnAppearing();
         activityWaiting.IsRunning = true;
         var sunriseSunsetData = await GetSunriseSunsetData();
-        InitializeUI(sunriseSunsetData.Item1, sunriseSunsetData.Item2, sunriseSunsetData.Item3);
+        InitializeUi(sunriseSunsetData.Item1, sunriseSunsetData.Item2, sunriseSunsetData.Item3);
         activityWaiting.IsRunning = false;
     }
 
-    async Task<(DateTime, DateTime, TimeSpan)> GetSunriseSunsetData()
+    private async Task<(DateTime, DateTime, TimeSpan)> GetSunriseSunsetData()
     {
 
         var latLongData = await LatLongService.GetLatLong();
@@ -30,7 +30,7 @@ public partial class SunrisePage : ContentPage
         return (riseTime, setTime, span);
     }
 
-    void InitializeUI(DateTime riseTime, DateTime setTime, TimeSpan span)
+    private void InitializeUi(DateTime riseTime, DateTime setTime, TimeSpan span)
     {
         lblDate.Text = DateTime.Today.ToString("D");
         lblSunrise.Text = riseTime.ToString("h:mm tt");
